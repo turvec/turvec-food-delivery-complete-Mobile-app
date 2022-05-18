@@ -1,117 +1,208 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery/controllers/cart_controller.dart';
+import 'package:food_delivery/controllers/popular_product_controller.dart';
+import 'package:food_delivery/controllers/recommended_product_controller.dart';
+import 'package:food_delivery/pages/cart/cart_page.dart';
+import 'package:food_delivery/routes/route_helper.dart';
 import 'package:food_delivery/utils/colors.dart';
 import 'package:food_delivery/utils/dimensions.dart';
 import 'package:food_delivery/widgets/app_icon.dart';
 import 'package:food_delivery/widgets/big_text.dart';
 import 'package:food_delivery/widgets/expandable_text_widget.dart';
+import 'package:get/get.dart';
 
 class RecommendedFoodDetail extends StatelessWidget {
-  const RecommendedFoodDetail({Key? key}) : super(key: key);
+  final int pageId;
+  final String page;
+  const RecommendedFoodDetail({Key? key, required this.pageId, required this.page})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var product =
+        Get.find<RecommendedProductController>().recommendedProductList[pageId];
+    Get.find<PopularProductController>().initProduct(product, Get.find<CartController>());
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            toolbarHeight: 80,
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                AppIcon(icon: Icons.clear),
-                AppIcon(icon: Icons.shopping_cart_outlined)
-              ],
-            ),
-            pinned: true,
-            backgroundColor: AppColors.yellowColor,
-            expandedHeight: 300,
-            flexibleSpace: FlexibleSpaceBar(
-              background: Image.asset(
-                "assets/image/food0.png",
-                width: double.maxFinite,
-                fit: BoxFit.cover,
+        backgroundColor: Colors.white,
+        body: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              automaticallyImplyLeading: false,
+              toolbarHeight: 80,
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GestureDetector(
+                      onTap: () {
+                        if (page=='cartpage') {
+                          Get.toNamed(RouteHelper.getCartPage());
+                        } else {
+                          Get.toNamed(RouteHelper.getInitial());
+                        }
+                      },
+                      child: AppIcon(icon: Icons.clear)),
+                  // AppIcon(icon: Icons.shopping_cart_outlined)
+                  GetBuilder<PopularProductController>(builder: (controller){
+                    return GestureDetector(
+                      onTap: () {
+                        if(controller.totalItems >= 1)
+                        Get.toNamed(RouteHelper.getCartPage());
+                      },
+                      child: Stack(
+                        children: [
+                          AppIcon(icon: Icons.shopping_cart_outlined),
+                          controller.totalItems>=1?
+                            Positioned(
+                              right: 0,
+                              top: 0,
+                              child: AppIcon(icon: Icons.circle, size: 20, iconColor: Colors.transparent, backgroundColor: AppColors.mainColor,)
+                              ):
+                            Container(),
+                            controller.totalItems>=1?
+                            Positioned(
+                              right: 4,
+                              top: 4,
+                              child: BigText(
+                                      text: controller.totalItems.toString(),
+                                      size: 12, color: Colors.white,
+                                    )
+                              ):
+                            Container(),
+                        ],
+                      ),
+                    );
+                  })
+                ],
               ),
-            ),
-            bottom: PreferredSize(
-              preferredSize: Size.fromHeight(40),
-              child: Container(
-                child: Center(child: BigText(size: Dimensions.font26, text: "Welcome Back")),
-                width: double.maxFinite,
-                padding: EdgeInsets.only(top: 5, bottom: 10),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(Dimensions.radius20),
-                    topRight: Radius.circular(Dimensions.radius20),
-                  ),
-                  color: Colors.white,
+              pinned: true,
+              backgroundColor: AppColors.yellowColor,
+              expandedHeight: 300,
+              flexibleSpace: FlexibleSpaceBar(
+                background: Image.asset(
+                  "assets/image/food0.png",
+                  width: double.maxFinite,
+                  fit: BoxFit.cover,
                 ),
-              )
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: Column(
-              children: [
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: Dimensions.width20),
-                  child: ExpandableTextWidget(text: "Turvec na boss base on one or twos ,  na boss base on one twos Turvec na boss base on one or twos,Turvec na boss base on one or twos ,  na boss base on one twos Turvec na boss base on one or twos ,Turvec na boss base on one or twos ,  na boss base on one twos Turvec na boss base on one or twos Turvec na boss base on one twos.Turvec na boss base on one or twos ,  na boss base on one twos Turvec na boss base on one or twos Turvec na boss base on one twos.Turvec na boss base on one or twos ,  na boss base on one twos,  na boss base on one twos Turvec na boss base on one or twos Turvec na boss base on one twos.Turvec na boss base on one or twos ,  na boss base on one twos, Turvec na boss base on one or twos Turvec na boss base on one twos.Turvec na boss base on one or twos , Turvec na boss base on one or twos Turvec na boss base on one twos.Turvec na boss base on one or twos ,  na boss base on one twos Turvec na boss base on one or twos Turvec na boss base on one twos.Turvec na boss base on one or twos ,  na boss base on one twos Turvec na boss base on one or twos,Turvec na boss base on one or twos ,  na boss base on one twos Turvec na boss base on one or twos ,Turvec na boss base on one or twos ,  na boss base on one twos Turvec na boss base on one or twos Turvec na boss base on one twos.Turvec na boss base on one or twos ,  na boss base on one twos Turvec na boss base on one or twos Turvec na boss base on one twos.Turvec na boss base on one or twos ,  na boss base on one twos,  na boss base on one twos Turvec na boss base on one or twos Turvec na boss base on one twos.Turvec na boss base on one or twos ,  na boss base on one twos, Turvec na boss base on one or twos Turvec na boss base on one twos.Turvec na boss base on one or twos , Turvec na boss base on one or twos Turvec na boss base on one twos.Turvec na boss base on one or twos ,  na boss base on one twos Turvec na boss base on one or twos Turvec na boss base on one twos."),
-                )
-              ],
-            ),
-          ),
-        ],
-      ),
-      bottomNavigationBar: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: Dimensions.width20*2.5, vertical: Dimensions.height10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                AppIcon(iconSize: Dimensions.iconSize24, backgroundColor: AppColors.mainColor, iconColor: Colors.white, icon: Icons.remove),
-                BigText(text: "\$12.88 "+" X "+" 0 ", color: AppColors.mainBlackColor, size: Dimensions.font26,),
-                AppIcon(iconSize: Dimensions.iconSize24, backgroundColor: AppColors.mainColor, iconColor: Colors.white, icon: Icons.add),
-              ],
-            ),
-          ),
-          Container(
-        height: Dimensions.pageViewTextContainer,
-        padding: EdgeInsets.symmetric(horizontal: Dimensions.width20, vertical: Dimensions.height20),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(Dimensions.radius20*2),
-            topRight: Radius.circular(Dimensions.radius20*2),
-          ),
-          color: AppColors.buttonBackgroundColor
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: Dimensions.width20, vertical: Dimensions.height20),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(Dimensions.radius20),
-                color: Colors.white
               ),
-              child: Icon(
-                Icons.favorite,
-                color: AppColors.mainColor,
+              bottom: PreferredSize(
+                  preferredSize: Size.fromHeight(40),
+                  child: Container(
+                    child: Center(
+                        child: BigText(
+                            size: Dimensions.font26, text: product.name!)),
+                    width: double.maxFinite,
+                    padding: EdgeInsets.only(top: 5, bottom: 10),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(Dimensions.radius20),
+                        topRight: Radius.circular(Dimensions.radius20),
+                      ),
+                      color: Colors.white,
+                    ),
+                  )),
+            ),
+            SliverToBoxAdapter(
+              child: Column(
+                children: [
+                  Container(
+                    margin:
+                        EdgeInsets.symmetric(horizontal: Dimensions.width20),
+                    child: ExpandableTextWidget(text: product.description!),
+                  )
+                ],
               ),
             ),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: Dimensions.width20, vertical: Dimensions.height20),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(Dimensions.radius20),
-                color: AppColors.mainColor
-              ),
-              child: BigText(text: "\$10 | add to cart", color: Colors.white,),
-            )
           ],
         ),
-      ),
-        ],
-      ),
-    );
+        bottomNavigationBar:
+            GetBuilder<PopularProductController>(builder: (controller) {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                padding: EdgeInsets.symmetric(
+                    horizontal: Dimensions.width20 * 2.5,
+                    vertical: Dimensions.height10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(
+                        onTap: () {
+                          controller.setQuantity(false);
+                        },
+                        child: AppIcon(
+                            iconSize: Dimensions.iconSize24,
+                            backgroundColor: AppColors.mainColor,
+                            iconColor: Colors.white,
+                            icon: Icons.remove)),
+                    BigText(
+                      text: "\$ ${product.price!}  X  ${controller.inCartItems} ",
+                      color: AppColors.mainBlackColor,
+                      size: Dimensions.font26,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        controller.setQuantity(true);
+                      },
+                      child: AppIcon(
+                          iconSize: Dimensions.iconSize24,
+                          backgroundColor: AppColors.mainColor,
+                          iconColor: Colors.white,
+                          icon: Icons.add),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                height: Dimensions.pageViewTextContainer,
+                padding: EdgeInsets.symmetric(
+                    horizontal: Dimensions.width20,
+                    vertical: Dimensions.height20),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(Dimensions.radius20 * 2),
+                      topRight: Radius.circular(Dimensions.radius20 * 2),
+                    ),
+                    color: AppColors.buttonBackgroundColor),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: Dimensions.width20,
+                          vertical: Dimensions.height20),
+                      decoration: BoxDecoration(
+                          borderRadius:
+                              BorderRadius.circular(Dimensions.radius20),
+                          color: Colors.white),
+                      child: Icon(
+                        Icons.favorite,
+                        color: AppColors.mainColor,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        controller.addItem(product);
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: Dimensions.width20,
+                            vertical: Dimensions.height20),
+                        decoration: BoxDecoration(
+                            borderRadius:
+                                BorderRadius.circular(Dimensions.radius20),
+                            color: AppColors.mainColor),
+                        child: BigText(
+                          text: "\$${product.price!} | add to cart",
+                          color: Colors.white,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ],
+          );
+        }));
   }
 }
